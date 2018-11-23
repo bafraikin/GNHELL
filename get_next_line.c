@@ -6,7 +6,7 @@
 /*   By: bafraiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 12:04:12 by bafraiki          #+#    #+#             */
-/*   Updated: 2018/11/23 19:09:09 by bafraiki         ###   ########.fr       */
+/*   Updated: 2018/11/23 19:10:32 by bafraiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	ft_cmplist(void *t_content, void *data_fd)
 
 	fd = *(int*)data_fd;
 	content = (t_fdlin*)t_content;
-	printf("%d %p\n", content->fd, content);
 	if (content->fd == fd)
 		return (0);
 	return (1);
