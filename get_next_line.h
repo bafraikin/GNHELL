@@ -6,7 +6,7 @@
 /*   By: bafraiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 12:04:28 by bafraiki          #+#    #+#             */
-/*   Updated: 2018/11/23 16:51:37 by bafraiki         ###   ########.fr       */
+/*   Updated: 2018/11/24 19:56:59 by bafraiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 # include <fcntl.h>
 # include <unistd.h>
-# include "libft.h"
+# include "libft/includes/libft.h"
 
 int					get_next_line(const int fd, char **line);
 
@@ -31,7 +31,7 @@ typedef struct		s_fdlin
 	int				size_rest;
 	int				mode;
 	int				fd;
-}					t_fdlin;
+}					t_fd;
 
 typedef struct		s_read
 {
