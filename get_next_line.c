@@ -6,11 +6,13 @@
 /*   By: bafraiki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 12:04:12 by bafraiki          #+#    #+#             */
-/*   Updated: 2018/11/27 15:37:10 by bafraiki         ###   ########.fr       */
+/*   Updated: 2018/11/27 20:43:42 by bafraiki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char *g_str;
 
 static int		ft_cmplist(void *t_content, void *data_fd)
 {
@@ -42,7 +44,11 @@ static int		ft_gest_list(t_list **begin, const int fd, t_read *l_read,
 {
 	t_fd *new;
 
-	new = (l_read->old) ? (t_fd*)(l_read->old) : (t_fd*)malloc(sizeof(t_fd));
+	new = 0;
+	if (l_read->old || l_read->r || (l_read->mod == 0 && l_read->tot))
+		new = (l_read->old) ? (t_fd*)l_read->old : (t_fd*)malloc(sizeof(t_fd));
+	else 
+		return(0);
 	if (!new)
 		return (-1);
 	(l_read->old) ? 0 : ft_bzero(new, sizeof(t_fd));
@@ -56,9 +62,7 @@ static int		ft_gest_list(t_list **begin, const int fd, t_read *l_read,
 	*line = new->l_line;
 	if (new->size_line == 0 && !l_read->pl)
 		return (0);
-	else if (!new->l_line)
-		return (-1);
-	if (l_read->mod == 0)
+	if (l_read->mod == 0 && (l_read->mod = -2) < 0)
 		*line = ft_strsub(l_read->is_r, 0, new->size_line);
 	return (1);
 }
@@ -87,7 +91,6 @@ static	t_read	*ft_recup_fd(const int fd, t_read *t_r, int mode)
 			t_r->mod = &t_r->is_r[t_r->tot - 1] - t_r->pl + 1;
 	}
 	t_r->is_r[t_r->tot] = '\0';
-	free(t_r->buff);
 	return (t_r);
 }
 
@@ -107,13 +110,14 @@ int				get_next_line(const int fd, char **line)
 			ptr = ft_recup_fd(fd, &l_read, 0);
 		else if ((l_read.old = ((t_list*)(l_read.old))->content) != NULL)
 			ptr = ft_recup_fd(fd, &l_read, 1);
+		free(l_read.buff);
+		l_read.buff = NULL;
 	}
 	if (!(line && fd >= 0 && ptr) || l_read.r == -1)
 		return (-1);
 	tmp = ft_gest_list(&begin, fd, ptr, line);
 	free(l_read.is_r);
-
-	if ((l_read.mod == 0 && tmp == 1) || (!line && (tmp == 0 || tmp == -1)))
-			ft_list_remove_if(&begin, (void*)&fd, ft_cmplist, ft_dellist);
+	if ((l_read.mod == -2) || (!line && tmp == -1))
+		ft_list_remove_if(&begin, (void*)&fd, ft_cmplist, ft_dellist);
 	return (tmp);
 }
