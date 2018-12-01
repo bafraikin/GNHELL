@@ -12,44 +12,27 @@
 
 #include "libft.h"
 
-static void	free_first(t_list **begin, void *data_ref, int (*cmp)(),
-		void (*del)())
+void  ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*del)())
 {
-	t_list *tmp;
+  t_list  *tmp;
+  t_list  *i;
 
-	if (data_ref)
-		if ((*cmp)((*begin)->content, data_ref) == 0)
-		{
-			tmp = (*begin)->next;
-			ft_lstdelone(begin, del);
-			*begin = tmp;
-		}
-}
-
-void		ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(),
-		void (*del)())
-{
-	t_list *tmp;
-	t_list *before;
-
-	if (begin_list && data_ref && *begin_list)
-	{
-		tmp = *begin_list;
-		before = *begin_list;
-		while (tmp->next)
-		{
-			tmp = tmp->next;
-			if ((*cmp)(tmp->content, data_ref) == 0)
-			{
-				if (tmp->next)
-					before->next = tmp->next;
-				else
-					before->next = NULL;
-				ft_lstdelone(&tmp, del);
-			}
-			else
-				before = before->next;
-		}
-		free_first(begin_list, data_ref, cmp, del);
-	}
+  while (*begin_list && cmp((*begin_list)->content, data_ref) == 0)
+  {
+    tmp = *begin_list;
+    *begin_list = (*begin_list)->next;
+ ft_lstdelone(&tmp, del);
+  }
+  i = *begin_list;
+  while (i && i->next)
+  {
+    if (cmp(i->next->content, data_ref) == 0)
+    {
+      tmp = i->next;
+      i->next = tmp->next;
+ ft_lstdelone(&tmp, del);
+    }
+    if (i->next)
+      i = i->next;
+  }
 }
