@@ -12,8 +12,6 @@
 
 #include "get_next_line.h"
 
-char *g_str;
-
 static int		ft_cmplist(void *t_content, void *data_fd)
 {
   t_fd	*content;
@@ -47,12 +45,14 @@ static int		ft_gest_list(t_list **begin, const int fd, t_read *l_read,
   new = 0;
   if (l_read->old || l_read->r || (l_read->mod == 0 && l_read->tot))
     new = (l_read->old) ? (t_fd*)l_read->old : (t_fd*)malloc(sizeof(t_fd));
-  else if((*line = ft_strsub("\0", 0, 1))) 
+  else if((*line = ft_strsub("a", 0, 0)) != NULL)
     return (0);
   else
     return (-1);
   if (!new)
+  {
     return (-1);
+  }
   (l_read->old) ? 0 : ft_bzero(new, sizeof(t_fd));
   new->size_line = l_read->tot - l_read->mod;
   new->size_rest = l_read->tot - new->size_line;
@@ -113,7 +113,6 @@ int				get_next_line(const int fd, char **line)
     else if ((l_read.old = ((t_list*)(l_read.old))->content) != NULL)
       ptr = ft_recup_fd(fd, &l_read, 1);
     free(l_read.buff);
-    l_read.buff = NULL;
   }
   if (!(line && fd >= 0 && ptr) || l_read.r == -1)
     return (-1);
