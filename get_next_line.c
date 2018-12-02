@@ -45,14 +45,12 @@ static int		ft_gest_list(t_list **begin, const int fd, t_read *l_read,
   new = 0;
   if (l_read->old || l_read->r || (l_read->mod == 0 && l_read->tot))
     new = (l_read->old) ? (t_fd*)l_read->old : (t_fd*)malloc(sizeof(t_fd));
-  else if((*line = ft_strsub("a", 0, 0)) != NULL)
+  else if ((*line = NULL) == NULL)
     return (0);
   else
     return (-1);
   if (!new)
-  {
     return (-1);
-  }
   (l_read->old) ? 0 : ft_bzero(new, sizeof(t_fd));
   new->size_line = l_read->tot - l_read->mod;
   new->size_rest = l_read->tot - new->size_line;
@@ -98,7 +96,7 @@ static	t_read	*ft_recup_fd(const int fd, t_read *t_r, int mode)
 
 int				get_next_line(const int fd, char **line)
 {
-  static t_list	*begin = NULL;
+  static                        t_list	*begin = NULL;
   t_read			l_read;
   t_read			*ptr;
   int				tmp;
@@ -115,10 +113,12 @@ int				get_next_line(const int fd, char **line)
     free(l_read.buff);
   }
   if (!(line && fd >= 0 && ptr) || l_read.r == -1)
+    if ((line && (*line = NULL) == NULL) || 1)
     return (-1);
   tmp = ft_gest_list(&begin, fd, ptr, line);
   free(l_read.is_r);
-  if ((l_read.mod == -2) || (!line && tmp == -1))
+  if ((l_read.mod == -2) || (!line && tmp == -1) || !*line)
     ft_list_remove_if(&begin, (void*)&fd, ft_cmplist, ft_dellist);
+  if ((tmp == -1 && line && (*line = NULL) == NULL) || 1)
   return (tmp);
 }
