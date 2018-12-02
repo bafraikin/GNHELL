@@ -13,7 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 32
+# define BUFF_SIZE 1
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -23,8 +23,8 @@ int					get_next_line(const int fd, char **line);
 
 typedef struct		s_fd
 {
-	char			*l_line; //not_sure
-	char			*l_rest; //not_sure
+	char		                *l_line;
+	char		                *l_rest;
 	int				size_line;
 	int				size_rest;
 	int				mode;
@@ -36,11 +36,11 @@ typedef struct		s_read
 	int				r;
 	int				tot;
 	int				mod;
-	char			*pl;  //not a str
-	char			*buff; //free
-	char			*is_r;
-	char			*tmp; //free
-	void			*old; //pas a lui
+	char			        *pl;
+	char			        *buff;
+	char		                *is_r;
+	char		                *tmp;
+	void			        *old;
 }					t_read;
 
 #endif
