@@ -13,7 +13,7 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <string.h>
+# include <stdlib.h>
 
 typedef	struct		s_list
 {
@@ -31,7 +31,8 @@ t_list				*ft_lstnew(void const *content, size_t content_size);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
-void				ft_lstadd(t_list **alst, t_list *new);
+t_list	*ft_lstadd(void *content, size_t content_size);
+void	ft_list_add_back(t_list **begin_list, void *content, size_t content_size);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_lstdelone(t_list **alst, void (*del)(void*, size_t));
 void				ft_putchar(char c);
